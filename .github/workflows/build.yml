@@ -1,0 +1,29 @@
+name: build for segfault vps
+
+on:
+    workflow_dispatch:
+        inputs:
+            tag:
+                required: true
+                type: string
+
+jobs:
+    build-release:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@main
+
+            - uses: actions/setup-go@main
+              with:
+                  go-version: "^1.13.1"
+
+            - run: go mod tidy
+
+            - run: CGO_ENABLED=0 go build
+
+            - uses: softprops/action-gh-release@master
+              with:
+                  files: sfpkg
+                  tag_name: ${{ github.event.inputs.tag }}
+              env:
+                  GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
