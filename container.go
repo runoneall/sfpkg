@@ -7,8 +7,10 @@ import (
 )
 
 func c_run(args []string) error {
-	real_args := append([]string{"UDOCKER_LOGLEVEL=2", "/usr/bin/udocker", "--allow-root"}, args...)
+	real_args := append([]string{"/usr/bin/udocker", "--allow-root"}, args...)
+
 	cmd := exec.Command(real_args[0], real_args[1:]...)
+	cmd.Env = append(os.Environ(), "UDOCKER_LOGLEVEL=2")
 
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
