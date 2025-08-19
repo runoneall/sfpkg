@@ -20,24 +20,6 @@ func c_run(args []string) error {
 	return cmd.Run()
 }
 
-func c_init() error {
-	if err := c_run([]string{"install", "--force", "--purge"}); err != nil {
-		return fmt.Errorf("不能完成 udocker 安装")
-	}
-
-	c_run([]string{"rmi", "alpine"})
-	if err := c_run([]string{"pull", "alpine"}); err != nil {
-		return fmt.Errorf("不能完成 alpine 系统下载")
-	}
-
-	c_run([]string{"rm", "sfpkg-container"})
-	if err := c_run([]string{"create", "--force", "--name=sfpkg-container", "alpine"}); err != nil {
-		return fmt.Errorf("不能创建应用容器 sfpkg-container")
-	}
-
-	return nil
-}
-
 func c_exec(args []string) error {
 	env_PWD := os.Getenv("PWD")
 	env_LOGNAME := os.Getenv("LOGNAME")
@@ -53,6 +35,28 @@ func c_exec(args []string) error {
 		fmt.Sprintf("--user=%s", env_LOGNAME),
 		"sfpkg-container",
 	}, args...))
+}
+
+func c_init() error {
+	if err := c_run([]string{"install", "--force", "--purge"}); err != nil {
+		return fmt.Errorf("不能完成 udocker 安装")
+	}
+
+	c_run([]string{"rmi", "alpine"})
+	if err := c_run([]string{"pull", "alpine"}); err != nil {
+		return fmt.Errorf("不能完成 alpine 系统下载")
+	}
+
+	c_run([]string{"rm", "sfpkg-container"})
+	if err := c_run([]string{"create", "--force", "--name=sfpkg-container", "alpine"}); err != nil {
+		return fmt.Errorf("不能创建应用容器 sfpkg-container")
+	}
+
+	if err := c_exec([]string{"apk", "add", "font-noto-cjk", "--no-cache"}); err != nil {
+		return fmt.Errorf("不能安装 font-noto-cjk 字体")
+	}
+
+	return nil
 }
 
 func c_linkout(name string) error {
