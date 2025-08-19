@@ -4,10 +4,15 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 func c_run(args []string) error {
 	real_args := append([]string{"UDOCKER_LOGLEVEL=0", "/usr/bin/udocker", "--allow-root"}, args...)
+
+	if os.Getenv("SFPKG_DEBUG") == "on" {
+		fmt.Println(">>>", strings.Join(real_args, " "))
+	}
 	cmd := exec.Command(real_args[0], real_args[1:]...)
 
 	cmd.Stdin = os.Stdin
