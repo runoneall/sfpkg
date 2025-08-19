@@ -10,12 +10,12 @@ import (
 func cli_init() *cobra.Command {
 	var rootCmd = &cobra.Command{
 		Use:   "sfpkg",
-		Short: "基于容器化技术的隔离式软件包管理器",
+		Short: "a simple software package manager for segfault",
 	}
 
 	var initCmd = &cobra.Command{
 		Use:   "init",
-		Short: "初始化容器",
+		Short: "init udocker and container",
 		Run: func(cmd *cobra.Command, args []string) {
 			if err := c_init(); err != nil {
 				fmt.Println(err)
@@ -26,7 +26,7 @@ func cli_init() *cobra.Command {
 
 	var apkCmd = &cobra.Command{
 		Use:                "apk",
-		Short:              "软件管理程序",
+		Short:              "package manager",
 		DisableFlagParsing: true,
 		Run: func(cmd *cobra.Command, args []string) {
 			if err := c_exec(append([]string{"apk"}, args...)); err != nil {
@@ -38,7 +38,7 @@ func cli_init() *cobra.Command {
 
 	var runCmd = &cobra.Command{
 		Use:                "run",
-		Short:              "运行软件",
+		Short:              "run software",
 		DisableFlagParsing: true,
 		Run: func(cmd *cobra.Command, args []string) {
 			if err := c_exec(args); err != nil {
@@ -50,7 +50,7 @@ func cli_init() *cobra.Command {
 
 	var linkCmd = &cobra.Command{
 		Use:   "link",
-		Short: "添加软件链接",
+		Short: "link software to system",
 		Run: func(cmd *cobra.Command, args []string) {
 			if err := c_linkout(args[0]); err != nil {
 				fmt.Println(err)
