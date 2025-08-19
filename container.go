@@ -67,10 +67,10 @@ func c_linkout(name string) error {
 		fix_name = fmt.Sprintf("sf%s", name)
 		fmt.Printf("Because %s is already installed in %s\n", name, path)
 		fmt.Printf("We will create a startup script to it as %s\n", fix_name)
-		fmt.Printf("The script will installed at /sec/usr/bin/%s\n", fix_name)
-		fmt.Printf("You can use \"rm /sec/usr/bin/%s\" to uninstall it\n", fix_name)
 	}
 
+	fmt.Printf("The script will installed at /sec/usr/bin/%s\n", fix_name)
+	fmt.Printf("You can use \"rm /sec/usr/bin/%s\" to uninstall it\n", fix_name)
 	return os.WriteFile(
 		fmt.Sprintf("/sec/usr/bin/%s", fix_name),
 		[]byte(fmt.Sprintf(`#!%s
